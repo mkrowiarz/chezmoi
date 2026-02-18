@@ -1,0 +1,21 @@
+# direnvrc — global direnv hooks
+# Loaded automatically by direnv for every .envrc
+
+# Nix: activate nix-shell environment if shell.nix or default.nix is present
+# Usage in .envrc: use nix
+use_nix() {
+  local nix_shell_opts=("$@")
+  watch_file shell.nix default.nix
+  eval "$(nix-shell --show-trace "${nix_shell_opts[@]}" --run 'direnv dump')"
+}
+
+# Python: create/activate a virtualenv using python3
+# Usage in .envrc: layout python3
+layout_python3() {
+  local python="${1:-python3}"
+  local venv=".venv"
+  if [[ ! -d "$venv" ]]; then
+    "$python" -m venv "$venv"
+  fi
+  source "$venv/bin/activate"
+}
