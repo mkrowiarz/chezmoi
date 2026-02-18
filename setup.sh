@@ -19,6 +19,12 @@ run_section() {
     bash "$SCRIPT_DIR/setup_${section}.sh"
 }
 
+# Apply chezmoi configs before running any section
+echo ""
+echo "  Applying chezmoi configs..."
+chezmoi apply
+echo ""
+
 # Run all sections
 if [[ "$1" == "--all" ]]; then
     for section in "${SECTIONS[@]}"; do
