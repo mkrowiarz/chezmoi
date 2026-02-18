@@ -1,6 +1,6 @@
 services:
   caddy:
-    image: ghcr.io/lucaslorentz/caddy-docker-proxy:latest
+    image: docker.io/lucaslorentz/caddy-docker-proxy:latest
     ports:
       - "80:80"
       - "443:443"

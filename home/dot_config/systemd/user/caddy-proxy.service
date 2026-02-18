@@ -6,10 +6,19 @@ Requires=podman.socket
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-WorkingDirectory=%h/.local/share/caddy-proxy
-ExecStart=podman-compose up -d
-ExecStop=podman-compose down
-Restart=on-failure
+ExecStart=/usr/bin/podman run -d \
+    --name caddy-proxy \
+    --network caddy \
+    -p 80:80 \
+    -p 443:443 \
+    -e CADDY_INGRESS_NETWORKS=caddy \
+    -v %t/podman/podman.sock:/var/run/docker.sock:ro \
+    -v caddy_data:/data \
+    -v caddy_config:/config \
+    --label caddy.email=local@localhost \
+    docker.io/lucaslorentz/caddy-docker-proxy:latest
+ExecStop=/usr/bin/podman stop caddy-proxy
+ExecStopPost=/usr/bin/podman rm -f caddy-proxy
 
 [Install]
 WantedBy=default.target

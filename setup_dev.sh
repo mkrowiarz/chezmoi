@@ -53,8 +53,12 @@ uv tool install 'harlequin[postgres,mysql,s3]'
 # =============================================================================
 if [[ "$OS" == "linux" ]]; then
     # Podman
-    pkg_install podman podman-compose
+    pkg_install podman
     systemctl --user enable --now podman.socket
+
+    # Allow rootless podman to bind ports 80/443
+    echo 'net.ipv4.ip_unprivileged_port_start=80' | sudo tee /etc/sysctl.d/99-rootless-ports.conf
+    sudo sysctl -p /etc/sysctl.d/99-rootless-ports.conf
 
     # dnsmasq via NetworkManager for *.test → 127.0.0.1
     # chezmoi applies NM config to ~/.config/NetworkManager/
@@ -72,8 +76,8 @@ if [[ "$OS" == "linux" ]]; then
     # Trust Caddy local CA (run after first start so cert is generated)
     echo "Waiting for Caddy to generate local CA..."
     sleep 5
-    podman exec caddy-proxy-caddy-1 caddy trust 2>/dev/null || \
-        echo "Note: run 'podman exec caddy-proxy-caddy-1 caddy trust' manually if trust fails"
+    podman exec caddy-proxy caddy trust 2>/dev/null || \
+        echo "Note: run 'podman exec caddy-proxy caddy trust' manually if trust fails"
 
 elif [[ "$OS" == "macos" ]]; then
     cask_install docker
