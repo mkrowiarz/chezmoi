@@ -106,7 +106,21 @@ labels:
   caddy.tls: internal
 ```
 
-The CA cert is trusted system-wide after running `setup_dev.sh`. Browsers will show a green lock for `*.localhost` with no warnings.
+The CA cert is trusted system-wide after running `setup_dev.sh`. Most apps will show a green lock for `*.localhost` with no warnings.
+
+**Firefox** uses its own certificate store and requires a one-time manual import:
+
+1. Open Firefox → address bar → `about:preferences#privacy`
+2. Scroll to **Certificates** → click **View Certificates**
+3. Go to the **Authorities** tab → click **Import**
+4. Select this file:
+   ```
+   ~/.local/share/containers/storage/volumes/caddy_data/_data/caddy/pki/authorities/local/root.crt
+   ```
+5. Check **"Trust this CA to identify websites"** → OK
+6. Restart Firefox
+
+After this, all `*.localhost` sites will show a green lock in Firefox.
 
 ## Wallpapers & theming
 
