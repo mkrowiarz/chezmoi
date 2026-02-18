@@ -11,7 +11,7 @@ begin "desktop" "hyprland, wezterm, kitty, yazi, greetd"
 if [[ "$OS" == "linux" ]]; then
     pkg_install waybar dunst wofi swww wl-clipboard grim slurp wlogout \
         brightnessctl hypridle hyprlock nwg-displays btop kanshi matugen
-    aur_install better-control-git
+    aur_install better-control-git pwvucontrol
 fi
 
 # =============================================================================
