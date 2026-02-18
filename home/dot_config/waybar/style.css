@@ -1,0 +1,208 @@
+/* Waybar Styles - Matugen colors with underline accents */
+
+@import "colors.css";
+
+* {
+    font-family: "FiraCode Nerd Font", "Font Awesome 6 Free", sans-serif;
+    font-size: 13px;
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+}
+
+window#waybar {
+    background: alpha(@background, 0.9);
+}
+
+/* Workspaces */
+#workspaces {
+    margin-left: 4px;
+}
+
+#workspaces button {
+    padding: 6px 10px;
+    margin: 4px 2px;
+    color: @foreground;
+    background: transparent;
+    border-radius: 0;
+    border-bottom: solid 3px alpha(@primary, 0.4);
+}
+
+#workspaces button:hover {
+    color: @primary;
+    background: alpha(@primary, 0.15);
+    border-bottom: solid 3px @primary;
+}
+
+#workspaces button.active {
+    color: @primary;
+    background: alpha(@primary, 0.2);
+    border-bottom: solid 3px @primary;
+}
+
+#workspaces button.urgent {
+    color: @error;
+    background: alpha(@error, 0.2);
+    border-bottom: solid 3px @error;
+}
+
+/* Window title */
+#window {
+    color: @secondary;
+    font-weight: bold;
+    padding: 6px 12px;
+    margin: 4px 3px;
+    border-radius: 0;
+    border-bottom: solid 3px @secondary;
+}
+
+/* Clock */
+#clock {
+    color: @tertiary;
+    font-weight: bold;
+    padding: 6px 12px;
+    margin: 4px 3px;
+    border-radius: 0;
+    border-bottom: solid 3px @tertiary;
+}
+
+/* Common module styling */
+#cpu,
+#memory,
+#battery,
+#bluetooth,
+#network,
+#wireplumber,
+#tray {
+    padding: 6px 12px;
+    margin: 4px 3px;
+    color: @foreground;
+    background: transparent;
+    border-radius: 0;
+}
+
+/* CPU - error color (heat/load association) */
+#cpu {
+    color: @error;
+    border-bottom: solid 3px @error;
+}
+
+#cpu:hover {
+    background: alpha(@error, 0.15);
+}
+
+/* Memory - tertiary color */
+#memory {
+    color: @tertiary;
+    border-bottom: solid 3px @tertiary;
+}
+
+#memory:hover {
+    background: alpha(@tertiary, 0.15);
+}
+
+/* Battery - primary normally, changes based on state */
+#battery {
+    color: @primary;
+    border-bottom: solid 3px @primary;
+    margin-right: 8px;
+}
+
+#battery:hover {
+    background: alpha(@primary, 0.15);
+}
+
+#battery.warning {
+    color: @error;
+    border-bottom: solid 3px @error;
+}
+
+#battery.critical {
+    color: @error;
+    border-bottom: solid 3px @error;
+}
+
+#battery.charging {
+    color: @primary;
+    border-bottom: solid 3px @primary;
+}
+
+/* Network - primary */
+#network {
+    color: @primary;
+    border-bottom: solid 3px @primary;
+}
+
+#network:hover {
+    background: alpha(@primary, 0.15);
+}
+
+#network.disconnected {
+    color: @error;
+    border-bottom: solid 3px @error;
+}
+
+/* Bluetooth - secondary */
+#bluetooth {
+    color: @secondary;
+    border-bottom: solid 3px @secondary;
+}
+
+#bluetooth:hover {
+    background: alpha(@secondary, 0.15);
+}
+
+#bluetooth.connected {
+    color: @secondary;
+    border-bottom: solid 3px @secondary;
+}
+
+#bluetooth.disabled {
+    color: alpha(@foreground, 0.4);
+    border-bottom: solid 3px alpha(@foreground, 0.3);
+}
+
+/* Audio - tertiary */
+#wireplumber {
+    color: @tertiary;
+    border-bottom: solid 3px @tertiary;
+}
+
+#wireplumber:hover {
+    background: alpha(@tertiary, 0.15);
+}
+
+#wireplumber.muted {
+    color: alpha(@foreground, 0.4);
+    border-bottom: solid 3px alpha(@foreground, 0.3);
+}
+
+/* Tray */
+#tray {
+    border-bottom: solid 3px transparent;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    border-bottom: solid 3px @error;
+}
+
+/* Tooltip */
+tooltip {
+    background: @background;
+    border: 1px solid @outline;
+    border-radius: 0;
+}
+
+tooltip label {
+    color: @foreground;
+}
+
+/* Calendar tooltip */
+#clock tooltip {
+    padding: 8px;
+}
