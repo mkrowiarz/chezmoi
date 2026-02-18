@@ -49,7 +49,8 @@ pkg_install just ripgrep git-delta
 uv tool install 'harlequin[postgres,mysql,s3]'
 
 # =============================================================================
-# Podman + caddy-proxy local dev stack (*.test → localhost)
+# Podman + caddy-proxy local dev stack (*.localhost subdomains)
+# No DNS config needed — *.localhost resolves to 127.0.0.1 natively (RFC 6761)
 # =============================================================================
 if [[ "$OS" == "linux" ]]; then
     # Podman
@@ -60,31 +61,19 @@ if [[ "$OS" == "linux" ]]; then
     echo 'net.ipv4.ip_unprivileged_port_start=80' | sudo tee /etc/sysctl.d/99-rootless-ports.conf
     sudo sysctl -p /etc/sysctl.d/99-rootless-ports.conf
 
-    # dnsmasq via NetworkManager for *.test → 127.0.0.1
-    # chezmoi applies NM config to ~/.config/NetworkManager/
-    # NM reads from /etc/NetworkManager/ so we copy them there
-    sudo mkdir -p /etc/NetworkManager/conf.d /etc/NetworkManager/dnsmasq.d
-    sudo cp "$HOME/.config/NetworkManager/conf.d/dnsmasq.conf" /etc/NetworkManager/conf.d/dnsmasq.conf
-    sudo cp "$HOME/.config/NetworkManager/dnsmasq.d/test-local.conf" /etc/NetworkManager/dnsmasq.d/test-local.conf
-    sudo systemctl restart NetworkManager
-
-    # caddy-proxy: shared reverse proxy for all *.test containers
+    # caddy-proxy: shared reverse proxy for all *.localhost containers
     podman network create caddy 2>/dev/null || true
-    mkdir -p "$HOME/.local/share/caddy-proxy"
     systemctl --user enable --now caddy-proxy.service
 
-    # Trust Caddy local CA (run after first start so cert is generated)
+    # Trust Caddy local CA
     echo "Waiting for Caddy to generate local CA..."
     sleep 5
-    podman exec caddy-proxy caddy trust 2>/dev/null || \
-        echo "Note: run 'podman exec caddy-proxy caddy trust' manually if trust fails"
+    CADDY_CA="$HOME/.local/share/containers/storage/volumes/caddy_data/_data/caddy/pki/authorities/local/root.crt"
+    sudo trust anchor --store "$CADDY_CA" && sudo update-ca-trust || \
+        echo "Note: run 'sudo trust anchor --store $CADDY_CA && sudo update-ca-trust' manually"
 
 elif [[ "$OS" == "macos" ]]; then
     cask_install docker
-
-    # DNS for *.test on macOS via /etc/resolver/
-    sudo mkdir -p /etc/resolver
-    sudo cp "$HOME/.config/resolver/test" /etc/resolver/test
 fi
 
 finished "dev (php/rust/python/node/podman/caddy-proxy/harlequin)"
