@@ -71,4 +71,10 @@ mkdir -p "$HOME/.config/fish"
 grep -qxF 'direnv hook fish | source' "$FISH_CONFIG" \
     || echo 'direnv hook fish | source' >> "$FISH_CONFIG"
 
-finished "core (base/jj/git/fonts/fish/starship/direnv)"
+# =============================================================================
+# Fisher + fish plugins
+# =============================================================================
+fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher"
+fish -c "fisher update"
+
+finished "core (base/jj/git/fonts/fish/starship/direnv/fisher)"
