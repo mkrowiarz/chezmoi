@@ -1,0 +1,46 @@
+# Matugen Configuration
+# Generate adaptive color schemes from wallpapers
+# Usage: matugen image <path-to-wallpaper>
+
+[config]
+# Color scheme type: "scheme-content", "scheme-expressive", "scheme-fidelity",
+# "scheme-fruit-salad", "scheme-monochrome", "scheme-neutral", "scheme-rainbow", "scheme-tonal-spot"
+scheme = "scheme-tonal-spot"
+
+# Contrast level: -1.0 to 1.0
+contrast = 0.0
+
+[templates.waybar-colors]
+input_path = "~/.config/matugen/templates/waybar-colors.css"
+output_path = "~/.config/waybar/colors.css"
+
+[templates.waybar-config]
+input_path = "~/.config/matugen/templates/waybar-config.jsonc"
+output_path = "~/.config/waybar/config.jsonc"
+
+[templates.hyprland-colors]
+input_path = "~/.config/matugen/templates/hyprland-colors.conf"
+output_path = "~/.config/hypr/conf/colors.conf"
+
+[templates.hyprtoolkit]
+input_path = "~/.config/matugen/templates/hyprtoolkit.conf"
+output_path = "~/.config/hypr/hyprtoolkit.conf"
+
+[templates.hyprlock]
+input_path = "~/.config/matugen/templates/hyprlock.conf"
+output_path = "~/.config/hypr/hyprlock.conf"
+
+[config.custom_colors]
+# You can define custom named colors here if needed
+
+[templates.wofi-style]
+input_path = "~/.config/matugen/templates/wofi-style.css"
+output_path = "~/.config/wofi/style.css"
+
+[templates.dunst]
+input_path = "~/.config/matugen/templates/dunstrc"
+output_path = "~/.config/dunst/dunstrc"
+
+[templates.wlogout]
+input_path = "~/.config/matugen/templates/wlogout-style.css"
+output_path = "~/.config/wlogout/style.css"

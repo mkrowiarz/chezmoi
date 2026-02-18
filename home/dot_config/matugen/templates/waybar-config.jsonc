@@ -1,0 +1,120 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 34,
+    "spacing": 4,
+    "margin-top": 10,
+    "margin-left": 10,
+    "margin-right": 10,
+
+    "modules-left": [
+        "hyprland/workspaces",
+        "hyprland/window"
+    ],
+    "modules-center": [
+        "clock"
+    ],
+    "modules-right": [
+        "tray",
+        "wireplumber",
+        "bluetooth",
+        "network",
+        "cpu",
+        "memory",
+        "battery"
+    ],
+
+    "hyprland/workspaces": {
+        "disable-scroll": false,
+        "all-outputs": true,
+        "format": "{icon}",
+        "format-icons": {
+            "active": "●",
+            "default": "○"
+        }
+    },
+
+    "hyprland/window": {
+        "format": "{}",
+        "max-length": 50,
+        "separate-outputs": true
+    },
+
+    "clock": {
+        "format": "{:%a %d %b  %H:%M}",
+        "tooltip-format": "<tt>{calendar}</tt>",
+        "calendar": {
+            "mode": "year",
+            "mode-mon-col": 3,
+            "weeks-pos": "left",
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='{{colors.primary.default.hex}}'><b>{}</b></span>",
+                "days": "<span color='{{colors.on_surface.default.hex}}'>{}</span>",
+                "weeks": "<span color='{{colors.tertiary.default.hex}}'><b>W{}</b></span>",
+                "weekdays": "<span color='{{colors.secondary.default.hex}}'><b>{}</b></span>",
+                "today": "<span color='{{colors.error.default.hex}}'><b><u>{}</u></b></span>"
+            }
+        }
+    },
+
+    "cpu": {
+        "format": "󰻠 {usage}%",
+        "tooltip": true,
+        "interval": 2,
+        "on-click": "kitty btop"
+    },
+
+    "memory": {
+        "format": "󰍛 {}%",
+        "tooltip-format": "{used:0.1f}GB / {total:0.1f}GB",
+        "on-click": "kitty btop"
+    },
+
+    "battery": {
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
+        "format-plugged": "󰚥 {capacity}%",
+        "format-alt": "{icon} {time}",
+        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    },
+
+    "network": {
+        "interval": 3,
+        "format-wifi": "󰖩  {bandwidthDownBits}  {bandwidthUpBits}",
+        "format-ethernet": "󰈀  {bandwidthDownBits}  {bandwidthUpBits}",
+        "format-disconnected": "󰖪 Disconnected",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%)",
+        "tooltip-format-ethernet": "{ifname}",
+        "tooltip-format-disconnected": "Disconnected",
+        "on-click": "~/.local/bin/network-menu"
+    },
+
+    "bluetooth": {
+        "format": "󰂯",
+        "format-connected": "󰂱 {num_connections}",
+        "format-disabled": "󰂲",
+        "tooltip-format": "{controller_alias}\n{num_connections} connected",
+        "tooltip-format-connected": "{controller_alias}\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}",
+        "on-click": "~/.local/bin/bluetooth-menu"
+    },
+
+    "wireplumber": {
+        "format": "󰕾 {volume}%",
+        "format-muted": "󰝟 muted",
+        "on-click": "pavucontrol",
+        "on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+",
+        "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+    },
+
+    "tray": {
+        "icon-size": 18,
+        "spacing": 10
+    }
+}
