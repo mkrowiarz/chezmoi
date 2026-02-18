@@ -1,1 +1,7 @@
-# starting point
+# chezmoi
+*.bak
+
+# Secrets
+*.key
+*.pem
+secrets/
