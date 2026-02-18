@@ -12,8 +12,12 @@ begin() {
     if [[ "$(uname)" == "Darwin" ]]; then
         echo "==> $1: $2"
     else
-        dialog --title " $1 " --infobox "\n$2\n" 5 60
-        sleep 0.5
+        if command -v dialog >/dev/null 2>&1; then
+            dialog --title " $1 " --infobox "\n$2\n" 5 60
+            sleep 0.5
+        else
+            echo "==> $1: $2"
+        fi
     fi
 }
 
@@ -21,8 +25,12 @@ finished() {
     if [[ "$(uname)" == "Darwin" ]]; then
         echo "Done: $1"
     else
-        dialog --title " Done " --infobox "\n✓ $1\n" 5 60
-        sleep 0.3
+        if command -v dialog >/dev/null 2>&1; then
+            dialog --title " Done " --infobox "\n✓ $1\n" 5 60
+            sleep 0.3
+        else
+            echo "Done: $1"
+        fi
     fi
 }
 

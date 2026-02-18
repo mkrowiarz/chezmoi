@@ -133,13 +133,6 @@ config.keys = { -- Claude Code
     action = wezterm.action.CloseCurrentPane {
         confirm = false
     }
-}, -- Claude Code
-{
-    key = "Enter",
-    mods = "SHIFT",
-    action = wezterm.action {
-        SendString = "\x1b\r"
-    }
 }}
 
 return config
