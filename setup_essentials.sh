@@ -18,10 +18,10 @@ fi
 # Bitwarden + rbw (unofficial CLI)
 # =============================================================================
 if [[ "$OS" == "linux" ]]; then
-    aur_install bitwarden rbw
+    aur_install bitwarden bitwarden-cli rbw
 else
     cask_install bitwarden
-    pkg_install rbw
+    pkg_install bitwarden-cli rbw
 fi
 
 # =============================================================================
