@@ -61,7 +61,11 @@ fi
 # =============================================================================
 # Wallpaper + matugen theming (Linux only)
 # =============================================================================
-if [[ "$OS" == "linux" ]] && [[ -f "$HOME/.config/background.png" ]]; then
+if [[ "$OS" == "linux" ]]; then
+    # Set default wallpaper if none exists
+    if [[ ! -f "$HOME/.config/background.png" ]]; then
+        cp "$SCRIPT_DIR/wallpapers/real big ahh tree.png" "$HOME/.config/background.png"
+    fi
     matugen image "$HOME/.config/background.png"
 fi
 
