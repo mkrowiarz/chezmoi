@@ -1,0 +1,25 @@
+services:
+  caddy:
+    image: ghcr.io/lucaslorentz/caddy-docker-proxy:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - CADDY_INGRESS_NETWORKS=caddy
+    volumes:
+      - ${XDG_RUNTIME_DIR}/podman/podman.sock:/var/run/docker.sock:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - caddy
+    restart: unless-stopped
+    labels:
+      caddy.email: local@localhost
+
+volumes:
+  caddy_data:
+  caddy_config:
+
+networks:
+  caddy:
+    external: true
