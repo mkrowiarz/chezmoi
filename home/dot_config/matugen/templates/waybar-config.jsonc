@@ -3,9 +3,6 @@
     "position": "top",
     "height": 34,
     "spacing": 4,
-    "margin-top": 10,
-    "margin-left": 10,
-    "margin-right": 10,
 
     "modules-left": [
         "hyprland/workspaces",
@@ -27,11 +24,7 @@
     "hyprland/workspaces": {
         "disable-scroll": false,
         "all-outputs": true,
-        "format": "{icon}",
-        "format-icons": {
-            "active": "●",
-            "default": "○"
-        }
+        "format": "{name}"
     },
 
     "hyprland/window": {
