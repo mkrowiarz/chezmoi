@@ -37,6 +37,25 @@ chezmoi/
 └── setup_comms.sh               # vesktop, ferdium
 ```
 
+## Quick start
+
+```bash
+# 1. Install git and chezmoi
+sudo pacman -S git chezmoi          # Arch
+brew install git chezmoi            # macOS
+
+# 2. Init from this repo (use HTTPS if SSH key not yet available)
+chezmoi init git@github.com:mkrowiarz/chezmoi.git
+# chezmoi init https://github.com/mkrowiarz/chezmoi.git
+
+# 3. Apply configs
+chezmoi apply
+
+# 4. Run setup
+cd ~/chezmoi
+bash setup.sh
+```
+
 ## Bootstrap
 
 ### Prerequisites
