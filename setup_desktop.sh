@@ -35,7 +35,6 @@ pkg_install yazi
 
 # =============================================================================
 # Login manager (Linux only)
-# greetd config is managed separately — copy manually after install
 # =============================================================================
 if [[ "$OS" == "linux" ]]; then
     pkg_install greetd greetd-tuigreet
@@ -43,6 +42,15 @@ if [[ "$OS" == "linux" ]]; then
     sudo mkdir -p /var/cache/tuigreet
     sudo chown greeter:greeter /var/cache/tuigreet
     sudo chmod 0755 /var/cache/tuigreet
+
+    sudo bash -c 'cat > /etc/greetd/config.toml' << 'EOF'
+[terminal]
+vt = 1
+
+[default_session]
+command = "tuigreet --time --remember --cmd Hyprland"
+user = "greeter"
+EOF
 
     sudo systemctl disable sddm.service    2>/dev/null || true
     sudo systemctl disable gdm.service     2>/dev/null || true
@@ -53,8 +61,8 @@ fi
 # =============================================================================
 # Wallpaper + matugen theming (Linux only)
 # =============================================================================
-if [[ "$OS" == "linux" ]] && [[ -f "$HOME/.config/background.jpg" ]]; then
-    matugen image "$HOME/.config/background.jpg"
+if [[ "$OS" == "linux" ]] && [[ -f "$HOME/.config/background.png" ]]; then
+    matugen image "$HOME/.config/background.png"
 fi
 
 finished "desktop (hyprland/wezterm/kitty/yazi/greetd)"
