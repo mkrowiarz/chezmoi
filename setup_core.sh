@@ -63,6 +63,11 @@ fi
 # =============================================================================
 pkg_install starship
 
+# Remove CachyOS's broken done.fish plugin (conflicts with Fisher-managed config)
+if [[ -f /usr/share/cachyos-fish-config/conf.d/done.fish ]]; then
+    sudo rm /usr/share/cachyos-fish-config/conf.d/done.fish
+fi
+
 # Fisher + fish plugins are bootstrapped by chezmoi's run_onchange_after_fisher script
 
 finished "core (base/jj/git/fonts/fish/starship/direnv/fisher)"
