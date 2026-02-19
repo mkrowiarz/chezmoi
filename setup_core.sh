@@ -63,18 +63,6 @@ fi
 # =============================================================================
 pkg_install starship
 
-# =============================================================================
-# direnv hook for fish (appended only if not already present)
-# =============================================================================
-FISH_CONFIG="$HOME/.config/fish/config.fish"
-mkdir -p "$HOME/.config/fish"
-grep -qxF 'direnv hook fish | source' "$FISH_CONFIG" \
-    || echo 'direnv hook fish | source' >> "$FISH_CONFIG"
-
-# =============================================================================
-# Fisher + fish plugins
-# =============================================================================
-pkg_install fisher
-fish -c "fisher update"
+# Fisher + fish plugins are bootstrapped by chezmoi's run_onchange_after_fisher script
 
 finished "core (base/jj/git/fonts/fish/starship/direnv/fisher)"
