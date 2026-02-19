@@ -1,0 +1,147 @@
+#!/bin/bash
+# Bluetooth wofi menu for waybar
+
+# Icons
+ICON_BT_ON="󰂯"
+ICON_BT_OFF="󰂲"
+ICON_HEADPHONES="󰋋"
+ICON_SPEAKER="󰓃"
+ICON_DEVICE="󰂱"
+ICON_SCAN="󰑐"
+ICON_CONNECTED="●"
+ICON_DISCONNECTED="○"
+
+# Check if bluetoothctl is available
+if ! command -v bluetoothctl &> /dev/null; then
+    notify-send "Bluetooth" "bluetoothctl not found"
+    exit 1
+fi
+
+# Get bluetooth power state
+get_power_state() {
+    bluetoothctl show | grep -q "Powered: yes" && echo "on" || echo "off"
+}
+
+# Get device icon based on device type/name
+get_device_icon() {
+    local name="$1"
+    local name_lower="${name,,}"
+
+    if [[ "$name_lower" =~ (headphone|airpod|buds|wh-|wf-|earphone|ear) ]]; then
+        echo "$ICON_HEADPHONES"
+    elif [[ "$name_lower" =~ (speaker|soundbar|boom|jbl|ue) ]]; then
+        echo "$ICON_SPEAKER"
+    else
+        echo "$ICON_DEVICE"
+    fi
+}
+
+# Get paired devices with connection status
+get_devices() {
+    local devices=""
+
+    while IFS= read -r line; do
+        local mac=$(echo "$line" | awk '{print $2}')
+        local name=$(echo "$line" | cut -d' ' -f3-)
+
+        if [[ -n "$mac" && -n "$name" ]]; then
+            local connected=$(bluetoothctl info "$mac" 2>/dev/null | grep -q "Connected: yes" && echo "connected" || echo "disconnected")
+            local icon=$(get_device_icon "$name")
+            local status_icon=$([[ "$connected" == "connected" ]] && echo "$ICON_CONNECTED" || echo "$ICON_DISCONNECTED")
+
+            devices+="${icon}  ${name} ${status_icon}\n"
+        fi
+    done < <(bluetoothctl devices Paired 2>/dev/null)
+
+    echo -e "$devices"
+}
+
+# Toggle device connection
+toggle_device() {
+    local selection="$1"
+    # Extract device name (remove icon and status)
+    local name=$(echo "$selection" | sed 's/^[^ ]* *//' | sed 's/ [●○]$//')
+
+    # Find MAC address from name
+    local mac=$(bluetoothctl devices Paired | grep -F "$name" | awk '{print $2}')
+
+    if [[ -z "$mac" ]]; then
+        notify-send "Bluetooth" "Device not found: $name"
+        return 1
+    fi
+
+    # Check current connection status
+    if bluetoothctl info "$mac" | grep -q "Connected: yes"; then
+        bluetoothctl disconnect "$mac" && notify-send "Bluetooth" "Disconnected: $name"
+    else
+        notify-send "Bluetooth" "Connecting to $name..."
+        bluetoothctl connect "$mac" && notify-send "Bluetooth" "Connected: $name" || notify-send "Bluetooth" "Failed to connect: $name"
+    fi
+}
+
+# Toggle bluetooth power
+toggle_power() {
+    if [[ $(get_power_state) == "on" ]]; then
+        bluetoothctl power off && notify-send "Bluetooth" "Powered off"
+    else
+        bluetoothctl power on && notify-send "Bluetooth" "Powered on"
+    fi
+}
+
+# Build and show menu
+show_menu() {
+    local power_state=$(get_power_state)
+    local menu=""
+
+    # Power toggle option
+    if [[ "$power_state" == "on" ]]; then
+        menu+="${ICON_BT_ON}  Turn Bluetooth Off\n"
+
+        # Add paired devices
+        local devices=$(get_devices)
+        if [[ -n "$devices" ]]; then
+            menu+="${devices}\n"
+        fi
+
+        menu+="${ICON_SCAN}  Scan for devices..."
+    else
+        menu+="${ICON_BT_OFF}  Turn Bluetooth On"
+    fi
+
+    # Show wofi menu
+    local selected=$(echo -e "$menu" | wofi --dmenu \
+        --prompt "Bluetooth" \
+        --cache-file /dev/null \
+        --width 600 \
+        --height 300)
+
+    # Handle selection
+    if [[ -z "$selected" ]]; then
+        exit 0
+    fi
+
+    case "$selected" in
+        *"Turn Bluetooth Off"*)
+            toggle_power
+            ;;
+        *"Turn Bluetooth On"*)
+            toggle_power
+            ;;
+        *"Scan for devices"*)
+            # Try various bluetooth managers
+            if command -v blueman-manager &>/dev/null; then
+                blueman-manager &
+            elif command -v blueberry &>/dev/null; then
+                blueberry &
+            else
+                ghostty -e bash -c "bluetoothctl scan on & echo 'Scanning... Press Ctrl+C to stop'; read"
+            fi
+            ;;
+        *)
+            # Device selected
+            toggle_device "$selected"
+            ;;
+    esac
+}
+
+show_menu

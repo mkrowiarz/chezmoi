@@ -1,0 +1,216 @@
+#!/bin/bash
+# Network wofi menu for waybar (uses nmcli)
+
+# Icons
+ICON_WIFI_ON="󰖩"
+ICON_WIFI_OFF="󰖪"
+ICON_ETHERNET="󰈀"
+ICON_SCAN="󰑐"
+ICON_CONNECTED="●"
+ICON_DISCONNECTED="○"
+
+# Check if nmcli is available
+if ! command -v nmcli &> /dev/null; then
+    notify-send "Network" "nmcli not found"
+    exit 1
+fi
+
+# Get wifi state (enabled/disabled)
+get_wifi_state() {
+    nmcli radio wifi 2>/dev/null | grep -q "enabled" && echo "on" || echo "off"
+}
+
+# Get active wifi connection name
+get_active_wifi() {
+    nmcli -t -f NAME,TYPE,DEVICE connection show --active 2>/dev/null | \
+        grep ":wifi:" | cut -d: -f1 | head -1
+}
+
+# Get active ethernet connection
+get_active_ethernet() {
+    nmcli -t -f NAME,TYPE,DEVICE connection show --active 2>/dev/null | \
+        grep ":ethernet:" | head -1
+}
+
+# Get saved wifi connections with status
+get_saved_networks() {
+    local active_wifi=$(get_active_wifi)
+    local networks=""
+
+    while IFS=: read -r name type; do
+        if [[ "$type" == "802-11-wireless" && -n "$name" ]]; then
+            if [[ "$name" == "$active_wifi" ]]; then
+                networks+="${ICON_WIFI_ON}  ${name} ${ICON_CONNECTED}\n"
+            else
+                networks+="${ICON_WIFI_ON}  ${name} ${ICON_DISCONNECTED}\n"
+            fi
+        fi
+    done < <(nmcli -t -f NAME,TYPE connection show 2>/dev/null)
+
+    echo -e "$networks"
+}
+
+# Toggle wifi on/off
+toggle_wifi() {
+    if [[ $(get_wifi_state) == "on" ]]; then
+        nmcli radio wifi off && notify-send "Network" "WiFi disabled"
+    else
+        nmcli radio wifi on && notify-send "Network" "WiFi enabled"
+    fi
+}
+
+# Connect to a saved network
+connect_network() {
+    local name="$1"
+    notify-send "Network" "Connecting to $name..."
+    if nmcli connection up "$name" 2>/dev/null; then
+        notify-send "Network" "Connected to $name"
+    else
+        notify-send "Network" "Failed to connect to $name"
+    fi
+}
+
+# Disconnect from a network
+disconnect_network() {
+    local name="$1"
+    if nmcli connection down "$name" 2>/dev/null; then
+        notify-send "Network" "Disconnected from $name"
+    else
+        notify-send "Network" "Failed to disconnect from $name"
+    fi
+}
+
+# Toggle network connection
+toggle_network() {
+    local selection="$1"
+    # Extract network name (remove icon and status)
+    local name=$(echo "$selection" | sed 's/^[^ ]* *//' | sed 's/ [●○]$//')
+
+    # Check if this network is currently active
+    local active_wifi=$(get_active_wifi)
+
+    if [[ "$name" == "$active_wifi" ]]; then
+        disconnect_network "$name"
+    else
+        connect_network "$name"
+    fi
+}
+
+# Show available wifi networks for connection
+show_available_networks() {
+    local networks=""
+    local active_wifi=$(get_active_wifi)
+
+    while IFS=: read -r ssid signal security; do
+        [[ -z "$ssid" || "$ssid" == "SSID" ]] && continue
+        local icon="${ICON_WIFI_ON}"
+        local status=""
+        if [[ "$ssid" == "$active_wifi" ]]; then
+            status=" ${ICON_CONNECTED}"
+        fi
+        networks+="${icon}  ${ssid} (${signal}%, ${security})${status}\n"
+    done < <(nmcli -t -f SSID,SIGNAL,SECURITY device wifi list 2>/dev/null | sort -t: -k2 -rn | head -15)
+
+    if [[ -z "$networks" ]]; then
+        notify-send "Network" "No networks found"
+        return
+    fi
+
+    local selected=$(echo -e "$networks" | wofi --dmenu \
+        --prompt "Available Networks" \
+        --cache-file /dev/null \
+        --width 600 \
+        --height 300)
+
+    [[ -z "$selected" ]] && return
+
+    # Extract SSID (remove icon and signal info)
+    local ssid=$(echo "$selected" | sed 's/^[^ ]* *//' | sed 's/ ([^)]*).*//')
+
+    # Check if we have a saved connection for this SSID
+    if nmcli -t -f NAME connection show | grep -qx "$ssid"; then
+        connect_network "$ssid"
+    else
+        # New network - need password
+        notify-send "Network" "New network: $ssid - use nmtui to connect"
+        ghostty -e nmtui-connect "$ssid" &
+    fi
+}
+
+# Build and show menu
+show_menu() {
+    local wifi_state=$(get_wifi_state)
+    local menu=""
+
+    # WiFi toggle option
+    if [[ "$wifi_state" == "on" ]]; then
+        local active_wifi=$(get_active_wifi)
+        if [[ -n "$active_wifi" ]]; then
+            menu+="${ICON_WIFI_ON}  Turn WiFi Off (connected: ${active_wifi})\n"
+        else
+            menu+="${ICON_WIFI_ON}  Turn WiFi Off\n"
+        fi
+    else
+        menu+="${ICON_WIFI_OFF}  Turn WiFi On\n"
+    fi
+
+    # Ethernet status (if connected)
+    local ethernet_info=$(get_active_ethernet)
+    if [[ -n "$ethernet_info" ]]; then
+        local eth_name=$(echo "$ethernet_info" | cut -d: -f1)
+        local eth_device=$(echo "$ethernet_info" | cut -d: -f3)
+        menu+="${ICON_ETHERNET}  Ethernet ${ICON_CONNECTED} ${eth_device}\n"
+    fi
+
+    # Separator
+    menu+="\n"
+
+    # Saved wifi networks (only if wifi is on)
+    if [[ "$wifi_state" == "on" ]]; then
+        local networks=$(get_saved_networks)
+        if [[ -n "$networks" ]]; then
+            menu+="${networks}"
+        fi
+
+        menu+="\n${ICON_SCAN}  Scan for networks..."
+    fi
+
+    # Show wofi menu
+    local selected=$(echo -e "$menu" | grep -v '^$' | wofi --dmenu \
+        --prompt "Network" \
+        --cache-file /dev/null \
+        --width 600 \
+        --height 300)
+
+    # Handle selection
+    if [[ -z "$selected" ]]; then
+        exit 0
+    fi
+
+    case "$selected" in
+        *"Turn WiFi Off"*)
+            toggle_wifi
+            ;;
+        *"Turn WiFi On"*)
+            toggle_wifi
+            ;;
+        *"Ethernet"*)
+            # Clicking ethernet just shows info
+            local eth_ip=$(nmcli -t -f IP4.ADDRESS device show $(echo "$ethernet_info" | cut -d: -f3) 2>/dev/null | head -1 | cut -d: -f2)
+            notify-send "Ethernet" "IP: ${eth_ip:-Unknown}"
+            ;;
+        *"Scan for networks"*)
+            # Scan and show available networks
+            notify-send "Network" "Scanning..."
+            nmcli device wifi rescan 2>/dev/null
+            sleep 1
+            show_available_networks
+            ;;
+        *)
+            # Network selected - toggle connection
+            toggle_network "$selected"
+            ;;
+    esac
+}
+
+show_menu
