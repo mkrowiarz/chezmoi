@@ -1,0 +1,45 @@
+{{- if not (lookPath "nvim") }}
+.config/astronvim_v5
+{{- end }}
+{{- if not (lookPath "btop") }}
+.config/btop
+{{- end }}
+{{- if not (lookPath "eza") }}
+.config/eza
+{{- end }}
+{{- if not (lookPath "fastfetch") }}
+.config/fastfetch
+{{- end }}
+{{- if not (lookPath "fish") }}
+.config/fish
+{{- end }}
+{{- if not (lookPath "ghostty") }}
+.config/ghostty
+{{- end }}
+{{- if not (lookPath "Hyprland") }}
+.config/hypr
+{{- end }}
+{{- if not (lookPath "kitty") }}
+.config/kitty
+{{- end }}
+{{- if not (lookPath "matugen") }}
+.config/matugen
+{{- end }}
+{{- if not (lookPath "starship") }}
+.config/starship.toml
+{{- end }}
+{{- if not (lookPath "waybar") }}
+.config/waybar
+{{- end }}
+{{- if not (lookPath "wezterm") }}
+.config/wezterm
+{{- end }}
+{{- if not (lookPath "yazi") }}
+.config/yazi
+{{- end }}
+{{- if not (lookPath "zellij") }}
+.config/zellij
+{{- end }}
+{{- if not (lookPath "podman") }}
+.config/systemd
+{{- end }}
