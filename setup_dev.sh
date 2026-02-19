@@ -65,4 +65,11 @@ elif [[ "$OS" == "macos" ]]; then
     cask_install docker
 fi
 
+# =============================================================================
+# JetBrains Toolbox (optional: --with-jetbrains)
+# =============================================================================
+if [[ " $* " == *" --with-jetbrains "* ]]; then
+    aur_install jetbrains-toolbox
+fi
+
 finished "dev (rust/python/node/podman/caddy-proxy/harlequin)"

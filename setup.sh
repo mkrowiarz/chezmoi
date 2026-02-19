@@ -9,8 +9,8 @@ DESCRIPTIONS=(
     "fish, starship, fonts, git, jujutsu, direnv, fisher"
     "1password, bitwarden, rbw, tailscale"
     "hyprland, wezterm, kitty, yazi, greetd, matugen"
-    "zellij, neovim (AstroNvim), vim"
-    "php, rust, python, node, podman, harlequin"
+    "zellij, neovim (AstroNvim)"
+    "rust, python, node, podman, harlequin"
     "vesktop, ferdium"
 )
 
