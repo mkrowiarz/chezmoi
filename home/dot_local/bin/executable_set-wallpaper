@@ -8,7 +8,7 @@ fi
 
 image="$(realpath "$1")"
 swww img "$image" && matugen image "$image" && cp "$image" ~/.config/background.png
-hyprctl reload
-killall waybar; waybar &disown
-killall dunst; dunst &disown
+hyprctl reload >/dev/null
+killall waybar 2>/dev/null; waybar &>/dev/null &disown
+killall dunst 2>/dev/null; dunst &>/dev/null &disown
 chezmoi add ~/.config/hypr/conf/colors.conf ~/.config/hypr/hyprlock.conf ~/.config/hypr/hyprtoolkit.conf

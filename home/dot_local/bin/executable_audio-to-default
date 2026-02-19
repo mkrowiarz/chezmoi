@@ -1,0 +1,7 @@
+#!/bin/bash
+# Move all audio streams to the default sink
+# Useful when switching Bluetooth devices or after connecting new audio output
+
+pactl list sink-inputs short | while read -r id rest; do
+    pactl move-sink-input "$id" @DEFAULT_SINK@ 2>/dev/null
+done
