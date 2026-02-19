@@ -31,7 +31,7 @@
 {{- if not (lookPath "waybar") }}
 .config/waybar
 {{- end }}
-{{- if not (lookPath "wezterm") }}
+{{- if or (eq .chezmoi.os "linux") (not (lookPath "wezterm")) }}
 .config/wezterm
 {{- end }}
 {{- if not (lookPath "yazi") }}
