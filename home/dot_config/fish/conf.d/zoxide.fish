@@ -49,7 +49,7 @@ if status is-interactive
         complete -c z -f # disable files by default 
         complete -c z -x -a '(_zoxide_z_complete)'
     else
-        echo "[plugin: zoxide] Command 'zoxide' cannot be found. Not installed or not in path"
+        # zoxide not installed, silently skip
     end
 
 end

@@ -1,5 +1,7 @@
 # Starship
-starship init fish | source
+if type -q starship
+    starship init fish | source
+end
 
 # fish_add_path "/Users/michal/.bun/bin"
 #mise activate fish | source
