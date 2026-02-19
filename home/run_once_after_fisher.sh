@@ -7,21 +7,28 @@ fi
 
 echo "Bootstrapping Fisher plugins..."
 fish -c '
-# Install Fisher if needed
-if not functions -q fisher
-    curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source
-    fisher install jorgebucaran/fisher
-end
-
-# Remove any conflicting files from previous chezmoi-managed installs
-for f in conf.d/z.fish conf.d/fzf.fish conf.d/zoxide.fish
-    set -l target ~/.config/fish/$f
-    if test -f $target; and not test -L $target
-        rm -f $target
+# Nuke all existing Fisher state and plugin files to avoid conflicts
+if functions -q fisher
+    fisher list | while read -l plugin
+        fisher remove $plugin 2>/dev/null
     end
+    functions -e fisher
+end
+rm -f ~/.config/fish/fish_plugins
+rm -f ~/.config/fish/completions/fisher.fish
+rm -f ~/.config/fish/functions/fisher.fish
+
+# Remove any leftover plugin files (from chezmoi or previous installs)
+for f in (find ~/.config/fish/conf.d ~/.config/fish/functions ~/.config/fish/completions -maxdepth 1 -name "*.fish" -newer ~/.config/fish/config.fish 2>/dev/null)
+    rm -f $f
 end
 
-# Write plugin list and install
-printf "%s\n" jorgebucaran/fisher jethrokuan/z jethrokuan/fzf icezyclon/zoxide.fish > ~/.config/fish/fish_plugins
-fisher update
+# Clean slate: install Fisher fresh
+curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source
+fisher install jorgebucaran/fisher
+
+# Install plugins
+fisher install jethrokuan/z
+fisher install jethrokuan/fzf
+fisher install icezyclon/zoxide.fish
 '
