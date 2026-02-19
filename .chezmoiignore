@@ -43,16 +43,9 @@
 {{- if not (lookPath "podman") }}
 .config/systemd
 {{- end }}
-{{- if not (lookPath "zoxide") }}
-.config/fish/conf.d/zoxide.fish
-.config/fish/conf.d/z.fish
-{{- end }}
 {{- if not (lookPath "eza") }}
 .config/fish/conf.d/eza-aliases.fish
 .config/fish/functions/eza-dev.fish
-{{- end }}
-{{- if not (lookPath "fzf") }}
-.config/fish/conf.d/fzf.fish
 {{- end }}
 {{- if not (lookPath "fnm") }}
 .config/fish/conf.d/fnm.fish
