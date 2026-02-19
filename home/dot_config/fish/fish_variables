@@ -13,6 +13,7 @@ SETUVAR Z_DATA_DIR:/home/michal/\x2elocal/share/z
 SETUVAR Z_EXCLUDE:\x5e/home/michal\x24
 SETUVAR __fish_initialized:4300
 SETUVAR fish_prompt_pwd_dir_length:1
+SETUVAR fish_user_paths:/home/michal/\x2elocal/share/fnm
 SETUVAR pure_begin_prompt_with_current_directory:true
 SETUVAR pure_check_for_new_release:false
 SETUVAR pure_color_at_sign:pure_color_mute
