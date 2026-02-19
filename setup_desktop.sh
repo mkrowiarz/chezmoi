@@ -3,7 +3,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/setup_distro.sh"
 source "$SCRIPT_DIR/setup_fns.sh"
 
-begin "desktop" "hyprland, wezterm, kitty, yazi, greetd"
+begin "desktop" "hyprland, ghostty, wezterm, kitty, yazi, greetd"
 
 # =============================================================================
 # Hyprland stack (Linux only)
@@ -22,6 +22,11 @@ if [[ "$OS" == "macos" ]]; then
 else
     aur_install wezterm
 fi
+
+# =============================================================================
+# Ghostty
+# =============================================================================
+pkg_install ghostty
 
 # =============================================================================
 # Kitty
@@ -69,4 +74,4 @@ if [[ "$OS" == "linux" ]]; then
     matugen image "$HOME/.config/background.png"
 fi
 
-finished "desktop (hyprland/wezterm/kitty/yazi/greetd)"
+finished "desktop (hyprland/ghostty/wezterm/kitty/yazi/greetd)"

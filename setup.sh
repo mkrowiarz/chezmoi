@@ -8,7 +8,7 @@ SECTIONS=(core essentials desktop terminal dev comms)
 DESCRIPTIONS=(
     "fish, starship, fonts, git, jujutsu, direnv, fisher"
     "1password, bitwarden, rbw, tailscale"
-    "hyprland, wezterm, kitty, yazi, greetd, matugen"
+    "hyprland, ghostty, wezterm, kitty, yazi, greetd, matugen"
     "zellij, neovim (AstroNvim), zed"
     "rust, python, node, podman, harlequin"
     "vesktop, ferdium"
