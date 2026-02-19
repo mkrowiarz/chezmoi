@@ -3,8 +3,6 @@
 {{-   $fish = "/opt/homebrew/bin/fish" -}}
 {{- end -}}
 
-sourceDir = {{ joinPath .chezmoi.homeDir "chezmoi" | quote }}
-
 [data]
     os   = {{ .chezmoi.os | quote }}
     fish = {{ $fish | quote }}
