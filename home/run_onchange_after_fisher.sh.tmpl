@@ -5,6 +5,11 @@ if ! command -v fish &> /dev/null; then
     exit 0
 fi
 
+# Remove CachyOS's broken done.fish plugin
+if [[ -f /usr/share/cachyos-fish-config/conf.d/done.fish ]]; then
+    sudo rm /usr/share/cachyos-fish-config/conf.d/done.fish
+fi
+
 echo "Installing/updating Fisher plugins..."
 fish -c '
 if not functions -q fisher
