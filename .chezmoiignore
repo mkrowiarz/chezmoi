@@ -44,5 +44,5 @@
 .config/systemd
 {{- end }}
 {{- if ne .chezmoi.os "linux" }}
-.local/bin/set-wallpaper
+.local/bin
 {{- end }}
