@@ -31,6 +31,7 @@ fnm install 25 && fnm default 25
 # CLI tools
 # =============================================================================
 pkg_install just ripgrep git-delta lazygit lazydocker
+sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b ~/.local/bin
 
 # =============================================================================
 # Harlequin SQL client
@@ -45,6 +46,7 @@ if [[ "$OS" == "linux" ]]; then
     # Podman
     pkg_install podman
     systemctl --user enable --now podman.socket
+    fish -c 'set -Ux PODMAN_COMPOSE_WARNING_LOGS false'
 
     # Allow rootless podman to bind ports 80/443
     echo 'net.ipv4.ip_unprivileged_port_start=80' | sudo tee /etc/sysctl.d/99-rootless-ports.conf
