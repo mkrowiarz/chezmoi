@@ -6,15 +6,6 @@ source "$SCRIPT_DIR/setup_fns.sh"
 begin "dev" "language runtimes + tooling"
 
 # =============================================================================
-# PHP + Composer
-# =============================================================================
-if [[ "$OS" == "linux" ]]; then
-    pkg_install php php-fpm composer php-intl php-sqlite php-gd xdebug
-else
-    pkg_install php composer
-fi
-
-# =============================================================================
 # Rust via rustup
 # =============================================================================
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
@@ -76,4 +67,4 @@ elif [[ "$OS" == "macos" ]]; then
     cask_install docker
 fi
 
-finished "dev (php/rust/python/node/podman/caddy-proxy/harlequin)"
+finished "dev (rust/python/node/podman/caddy-proxy/harlequin)"

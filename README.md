@@ -64,7 +64,7 @@ chezmoi/
 | `setup_essentials.sh` | 1Password + CLI, Bitwarden, rbw, Tailscale |
 | `setup_desktop.sh` | Hyprland stack, waybar, wezterm, kitty, yazi, greetd, matugen |
 | `setup_terminal.sh` | zellij, neovim (AstroNvim), vim |
-| `setup_dev.sh` | PHP, Rust, Python/uv, Node/fnm, Podman + caddy-proxy, Harlequin, cli tools |
+| `setup_dev.sh` | Rust, Python/uv, Node/fnm, Podman + caddy-proxy, Harlequin, cli tools |
 | `setup_comms.sh` | Vesktop (Discord), Ferdium |
 
 ## Managed configs
