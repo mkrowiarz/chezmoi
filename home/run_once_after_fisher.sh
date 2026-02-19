@@ -23,7 +23,5 @@ curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fi
 fisher install jorgebucaran/fisher
 
 # Install plugins
-fisher install jethrokuan/z
 fisher install jethrokuan/fzf
-fisher install icezyclon/zoxide.fish
 '
