@@ -48,7 +48,7 @@ if [[ "$OS" == "linux" ]]; then
 vt = 1
 
 [default_session]
-command = "tuigreet --time --remember --cmd Hyprland"
+command = "tuigreet --time --remember --cmd start-hyprland"
 user = "greeter"
 EOF
 
