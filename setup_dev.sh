@@ -8,24 +8,22 @@ begin "dev" "language runtimes + tooling"
 # =============================================================================
 # Rust via rustup
 # =============================================================================
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-source "$HOME/.cargo/env"
+pkg_install rustup
+rustup default stable
 
 # =============================================================================
 # Python + uv
 # =============================================================================
 if [[ "$OS" == "linux" ]]; then
-    pkg_install python python-pip
+    pkg_install python python-pip uv
 else
-    pkg_install python
+    pkg_install python uv
 fi
-curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # =============================================================================
 # Node.js via fnm
 # =============================================================================
-curl -fsSL https://fnm.vercel.app/install | bash
-export PATH="$HOME/.local/share/fnm:$PATH"
+pkg_install fnm
 eval "$(fnm env)"
 fnm install 25 && fnm default 25
 

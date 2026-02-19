@@ -61,7 +61,7 @@ fi
 # =============================================================================
 # Starship prompt
 # =============================================================================
-curl -sS https://starship.rs/install.sh | sh -s -- -y
+pkg_install starship
 
 # =============================================================================
 # direnv hook for fish (appended only if not already present)
@@ -74,7 +74,7 @@ grep -qxF 'direnv hook fish | source' "$FISH_CONFIG" \
 # =============================================================================
 # Fisher + fish plugins
 # =============================================================================
-fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher"
+pkg_install fisher
 fish -c "fisher update"
 
 finished "core (base/jj/git/fonts/fish/starship/direnv/fisher)"

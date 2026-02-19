@@ -3,7 +3,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/setup_distro.sh"
 source "$SCRIPT_DIR/setup_fns.sh"
 
-begin "terminal" "zellij, neovim (AstroNvim), vim"
+begin "terminal" "zellij, neovim (AstroNvim)"
 
 # =============================================================================
 # Zellij - terminal multiplexer
@@ -24,12 +24,4 @@ mv ~/.cache/nvim       ~/.cache/nvim.bak        2>/dev/null || true
 # symlink it to nvim so neovim picks it up
 ln -sfn "$HOME/.config/astronvim_v5" "$HOME/.config/nvim"
 
-# =============================================================================
-# Vim - lightweight fallback
-# =============================================================================
-pkg_install vim
-
-mkdir -p ~/.vim/autoload ~/.vim/bundle
-curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
-
-finished "terminal (zellij/neovim/vim)"
+finished "terminal (zellij/neovim)"

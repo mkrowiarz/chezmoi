@@ -52,7 +52,7 @@ chezmoi/
 ├── setup_essentials.sh          # 1password, bitwarden, rbw, tailscale
 ├── setup_desktop.sh             # hyprland stack, wezterm, kitty, yazi, greetd, matugen
 ├── setup_terminal.sh            # zellij, neovim (AstroNvim), vim
-├── setup_dev.sh                 # php, rust, python, node, podman, caddy-proxy, harlequin
+├── setup_dev.sh                 # rust, python, node, podman, caddy-proxy, harlequin
 └── setup_comms.sh               # vesktop, ferdium
 ```
 
@@ -63,7 +63,7 @@ chezmoi/
 | `setup_core.sh` | fish, starship, nerd fonts, git, jujutsu, direnv, fisher + plugins |
 | `setup_essentials.sh` | 1Password + CLI, Bitwarden, rbw, Tailscale |
 | `setup_desktop.sh` | Hyprland stack, waybar, wezterm, kitty, yazi, greetd, matugen |
-| `setup_terminal.sh` | zellij, neovim (AstroNvim), vim |
+| `setup_terminal.sh` | zellij, neovim (AstroNvim) |
 | `setup_dev.sh` | Rust, Python/uv, Node/fnm, Podman + caddy-proxy, Harlequin, cli tools |
 | `setup_comms.sh` | Vesktop (Discord), Ferdium |
 
