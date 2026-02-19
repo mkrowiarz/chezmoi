@@ -1,0 +1,24 @@
+# Font
+font-family = JetBrains Mono
+font-style = Medium
+font-size = 12
+
+# Theme - auto-switches with system dark/light mode
+# List available: ghostty +list-themes | grep -i nord
+theme = light:Nord Light,dark:Nord
+
+# Window
+window-decoration = auto
+window-padding-x = 16
+window-padding-y = 12,4
+window-padding-color = extend
+
+# Keybindings
+# Shift+Enter for Claude Code (sends ESC + Enter)
+keybind = shift+enter=text:\x1b\r
+# Split panes
+keybind = super+d=new_split:down
+keybind = super+shift+d=new_split:right
+keybind = super+shift+w=close_surface
+# Copy URL under cursor
+keybind = ctrl+shift+a=copy_url_to_clipboard
