@@ -7,18 +7,22 @@ fi
 
 echo "Bootstrapping Fisher plugins..."
 fish -c '
-# Nuke all existing Fisher state and plugin files to avoid conflicts
-if functions -q fisher
-    fisher list | while read -l plugin
-        fisher remove $plugin 2>/dev/null
+# Remove all non-chezmoi fish plugin files to avoid Fisher "conflicting files" errors.
+# chezmoi managed paths look like ".config/fish/functions/foo.fish"
+set -l managed (chezmoi managed --include=files 2>/dev/null)
+for dir in functions completions conf.d
+    for f in ~/.config/fish/$dir/*.fish
+        test -f "$f"; or continue
+        # Convert absolute path to chezmoi-managed relative path (.config/fish/...)
+        set -l rel (string replace -- "$HOME/" "" "$f")
+        if not contains -- "$rel" $managed
+            rm -f "$f"
+        end
     end
-    functions -e fisher
 end
 rm -f ~/.config/fish/fish_plugins
-rm -f ~/.config/fish/completions/fisher.fish
-rm -f ~/.config/fish/functions/fisher.fish
 
-# Clean slate: install Fisher fresh
+# Install Fisher fresh
 curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source
 fisher install jorgebucaran/fisher
 
