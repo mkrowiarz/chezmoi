@@ -1,0 +1,14 @@
+#!/bin/bash
+set -euo pipefail
+
+if [ -z "${1:-}" ]; then
+    echo "Usage: set-wallpaper <path-to-image>"
+    exit 1
+fi
+
+image="$(realpath "$1")"
+swww img "$image" && matugen image "$image" && cp "$image" ~/.config/background.png
+hyprctl reload
+killall waybar; waybar &disown
+killall dunst; dunst &disown
+chezmoi add ~/.config/hypr/conf/colors.conf ~/.config/hypr/hyprlock.conf ~/.config/hypr/hyprtoolkit.conf

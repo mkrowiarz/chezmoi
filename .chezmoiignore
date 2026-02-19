@@ -43,3 +43,6 @@
 {{- if not (lookPath "podman") }}
 .config/systemd
 {{- end }}
+{{- if ne .chezmoi.os "linux" }}
+.local/bin/set-wallpaper
+{{- end }}
