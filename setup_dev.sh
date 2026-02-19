@@ -54,12 +54,14 @@ if [[ "$OS" == "linux" ]]; then
     podman network create caddy 2>/dev/null || true
     systemctl --user enable --now caddy-proxy.service
 
-    # Trust Caddy local CA
-    echo "Waiting for Caddy to generate local CA..."
-    sleep 5
+    # Trust Caddy local CA (if available)
     CADDY_CA="$HOME/.local/share/containers/storage/volumes/caddy_data/_data/caddy/pki/authorities/local/root.crt"
-    sudo trust anchor --store "$CADDY_CA" && sudo update-ca-trust || \
-        echo "Note: run 'sudo trust anchor --store $CADDY_CA && sudo update-ca-trust' manually"
+    if [[ -f "$CADDY_CA" ]]; then
+        sudo trust anchor --store "$CADDY_CA" && sudo update-ca-trust
+    else
+        echo "Note: Caddy CA not found yet. After caddy-proxy starts, run:"
+        echo "  sudo trust anchor --store $CADDY_CA && sudo update-ca-trust"
+    fi
 
 elif [[ "$OS" == "macos" ]]; then
     cask_install docker
