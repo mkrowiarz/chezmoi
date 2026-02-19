@@ -5,5 +5,6 @@ set FNM_PATH "/opt/homebrew/opt/fnm/bin"
 set FNM_PATH "$HOME/.local/share/fnm"
 {{- end }}
 if [ -d "$FNM_PATH" ]
+  fish_add_path "$FNM_PATH"
   fnm env | source
 end
