@@ -32,7 +32,7 @@ fnm install 22 && fnm default 22
 # =============================================================================
 # CLI tools
 # =============================================================================
-pkg_install just ripgrep git-delta
+pkg_install just ripgrep git-delta lazygit lazydocker
 
 # =============================================================================
 # Harlequin SQL client
