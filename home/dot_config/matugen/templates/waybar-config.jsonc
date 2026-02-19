@@ -55,13 +55,13 @@
         "format": "󰻠 {usage}%",
         "tooltip": true,
         "interval": 2,
-        "on-click": "kitty btop"
+        "on-click": "ghostty -e btop"
     },
 
     "memory": {
         "format": "󰍛 {}%",
         "tooltip-format": "{used:0.1f}GB / {total:0.1f}GB",
-        "on-click": "kitty btop"
+        "on-click": "ghostty -e btop"
     },
 
     "battery": {
