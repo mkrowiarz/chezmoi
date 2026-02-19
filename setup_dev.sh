@@ -27,7 +27,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 curl -fsSL https://fnm.vercel.app/install | bash
 export PATH="$HOME/.local/share/fnm:$PATH"
 eval "$(fnm env)"
-fnm install 22 && fnm default 22
+fnm install 25 && fnm default 25
 
 # =============================================================================
 # CLI tools
