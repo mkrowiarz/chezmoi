@@ -60,10 +60,10 @@ chezmoi/
 
 | Script | What it installs |
 |-|-|
-| `setup_core.sh` | fish, starship, nerd fonts, git, jujutsu, direnv, fisher + plugins |
+| `setup_core.sh` | fish, starship, nerd fonts, git, jujutsu, direnv, fisher, fd, fzf, bat, jq, zoxide |
 | `setup_essentials.sh` | 1Password + CLI, Bitwarden, rbw, Tailscale |
 | `setup_desktop.sh` | Hyprland stack, waybar, wezterm, kitty, yazi, greetd, matugen |
-| `setup_terminal.sh` | zellij, neovim (AstroNvim) |
+| `setup_terminal.sh` | zellij, neovim (AstroNvim), zed |
 | `setup_dev.sh` | Rust, Python/uv, Node/fnm, Podman + caddy-proxy, Harlequin, cli tools |
 | `setup_comms.sh` | Vesktop (Discord), Ferdium |
 

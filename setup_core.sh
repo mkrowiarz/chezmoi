@@ -8,7 +8,7 @@ begin "core" "base packages, git, fonts, fish, starship"
 # =============================================================================
 # Base packages
 # =============================================================================
-pkg_install fish htop git curl tealdeer direnv ncdu
+pkg_install fish htop git curl tealdeer direnv ncdu fd fzf bat jq zoxide
 
 # =============================================================================
 # Jujutsu (jj) version control
