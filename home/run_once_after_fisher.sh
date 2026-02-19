@@ -18,11 +18,6 @@ rm -f ~/.config/fish/fish_plugins
 rm -f ~/.config/fish/completions/fisher.fish
 rm -f ~/.config/fish/functions/fisher.fish
 
-# Remove any leftover plugin files (from chezmoi or previous installs)
-for f in (find ~/.config/fish/conf.d ~/.config/fish/functions ~/.config/fish/completions -maxdepth 1 -name "*.fish" -newer ~/.config/fish/config.fish 2>/dev/null)
-    rm -f $f
-end
-
 # Clean slate: install Fisher fresh
 curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source
 fisher install jorgebucaran/fisher
