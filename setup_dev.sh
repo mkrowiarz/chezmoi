@@ -70,10 +70,15 @@ elif [[ "$OS" == "macos" ]]; then
 fi
 
 # =============================================================================
+# Networking: VPN management TUI
+# =============================================================================
+pkg_install vortix wireguard-tools
+
+# =============================================================================
 # JetBrains Toolbox (optional: --with-jetbrains)
 # =============================================================================
 if [[ " $* " == *" --with-jetbrains "* ]]; then
     aur_install jetbrains-toolbox
 fi
 
-finished "dev (rust/python/node/podman/caddy-proxy/harlequin)"
+finished "dev (rust/python/node/podman/caddy-proxy/harlequin/vortix)"
